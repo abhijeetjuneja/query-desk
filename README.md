@@ -5,15 +5,15 @@ QueryDesk is a ticket support system designed to provide customers support over 
 
   1. User View
   
-    1. Login and Signup View.
-    2. A view to create a ticket.
-    3. A view to see all queries raised by person and other members.
-    4. A view to see details of query with option to change status of ticket.
+    * Login and Signup View.
+    * A view to create a ticket.
+    * A view to see all queries raised by person and other members.
+    * A view to see details of query with option to change status of ticket.
 
   2. Admin View
    
-    1. View to see all tickets in the system by status.
-    2. View to see details of a query with option to change status of ticket and post an answer.
+    * View to see all tickets in the system by status.
+    * View to see details of a query with option to change status of ticket and post an answer.
 
 
 ## Prerequisites
