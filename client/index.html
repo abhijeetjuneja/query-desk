@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="queryDesk">
+
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1.0, user-scalable=0">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="vendor/mdbootstrap/css/mdb.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="vendor/toastr/build/toastr.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="vendor/font-awesome/css/font-awesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="css/style.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans">
+
+</head>
+
+
+<body ng-controller="mainController as main"  ng-show="main.load" ng-cloak>
+
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-light white fixed-top scrolling-navbar">
+
+        <!-- Navbar brand -->
+        <a class="navbar-brand" href="/"><strong>QueryDesk <i class="fa fa-question-circle"></i></strong></a>
+
+        <!-- Collapse button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <!-- Links -->
+            <ul class="navbar-nav ml-auto ">
+                <li class="nav-item"  ng-if="!main.loggedIn">
+                    <a class="nav-link" href="#steps"><strong>Why QueryDesk?</strong></a>
+                </li>
+                <li class="nav-item" ng-if="!main.loggedIn">
+                    <a class="nav-link" href="#features"  ><strong>Features</strong></a>
+                </li>
+
+                <!-- Trigger for login modal -->
+                <li class="nav-item"  ng-if="!main.loggedIn" >
+                    <!-- Show if not logged in -->
+                    <a class="nav-link" data-toggle="modal" data-target="#modalLoginForm" ><strong>Login/Signup</strong></a>
+                </li>
+                <li class="nav-item" ng-if="main.loggedIn">
+                    <!-- Show if logged in -->
+                    <a class="nav-link"  href="/dashboard" ><strong>Dashboard</strong></a>
+                </li>
+                <li class="nav-item">
+                    
+                    
+                </li>
+                <!-- Basic dropdown -->
+                <!-- Show if logged in -->
+                <div class="btn-group wow animated zoomIn logout" data-wow-delay="0.3s" ng-if="main.loggedIn" >
+                    <button class="btn btn-mdb btn-md dropdown-toggle user-dropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/user.png" style="height: 15px;width:15px;">&nbsp<strong>{{main.name}}</strong></button>
+
+                    <div class="dropdown-menu wow animated zoomIn">
+                        <a class="dropdown-item" ng-click="main.logout();"><strong>Logout</strong></a>
+                    </div>
+                </div>
+
+            </ul>
+        </div>
+        <!-- Collapsible content -->
+
+    </nav>
+    <!--/.Navbar-->
+
+    <main role="main" class="container-fluid main">
+
+      
+    <div ng-view="main1">
+    </div>
+  
+     <!--Modal: Login / Register Form-->
+    <div class="modal fade wow animated zoomIn" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog cascading-modal" role="document">
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Modal cascading tabs-->
+                <div class="modal-c-tabs">
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tabs-2 unique-color-dark social-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#login" role="tab"><i class="fa fa-user mr-1"></i> Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#register" role="tab"><i class="fa fa-user-plus mr-1"></i> Register</a>
+                        </li>
+                    </ul>
+
+                    <!-- Tab panels -->
+                    <div class="tab-content">
+                        <!--Panel 7-->
+                        <div class="tab-pane fade in show active" id="login" role="tabpanel">
+
+                            <!--Body-->
+                            <div class="modal-body mb-1">
+
+                                <!-- Form to submit login data -->
+                                <form name="loginForm" ng-submit="main.loginUser(loginData,loginForm.$valid);" id="loginForm" novalidate>
+                                    <div class="md-form form-sm" ng-class="{ 'success':(loginForm.email.$valid && !loginForm.email.$pristine && !main.emailInvalid), 'error':(!loginForm.email.$valid && !loginForm.email.$pristine) || (!loginForm.email.$valid && loginForm.$submitted) || main.emailInvalid }">
+                                        <i class="fa fa-envelope prefix"></i>
+                                        <input type="email" name="email" id="form22" class="form-control validate" ng-model="main.loginData.email" ng-minlength="3" ng-maxlength="40" ng-pattern="/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/" required>
+                                        <label for="form22">Your email</label>
+                                        <!-- Error message if not entered-->
+                                        <p class="help-block" ng-show="((!loginForm.email.$pristine && loginForm.email.$error.required) || (loginForm.$submitted && loginForm.email.$error.required))">* Please Enter your Email</p>
+
+                                        <!-- Error message by ng-pattern -->
+                                        <ul class="help-block" ng-show="((!loginForm.email.$pristine && loginForm.email.$error.pattern) || (!loginForm.email.$pristine && loginForm.email.$error.minlength) || (!loginForm.email.$pristine && loginForm.email.$error.maxlength))">
+                                            <li>Email should contain "@"</li>
+                                            <li>No special characters</li>
+                                            <li>Must be atleast 3 characters and not more than 25 characters</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="md-form form-sm" ng-class="{ 'error':((!loginForm.password.$pristine && loginForm.password.$error.required) || (loginForm.$submitted && loginForm.password.$error.required))}">
+                                        <i class="fa fa-lock prefix"></i>
+                                        <input type="password" id="form23" name="password" class="form-control validate" ng-model="main.loginData.password" required>
+                                        <label  for="form23">Your password</label>
+                                        <!-- Error message if not entered-->
+                                        <p class="help-block" ng-show="((!loginForm.password.$pristine && loginForm.password.$error.required) || (loginForm.$submitted && loginForm.password.$error.required))">* Please Enter your Password</p>
+                                    </div>
+                                    <div class="text-center mt-2">
+                                        <button class="btn btn-info" type="submit">Log in <i class="fa fa-sign-in ml-1"></i></button>
+                                    </div>
+                                </form>
+
+                                <!-- Success message -->
+                                <div class = "show-hide-message col-sm-12" ng-show="main.successMessage">
+                                    <div class="alert alert-success">{{main.successMessage}}</div>
+                                </div>
+
+                                <!-- Error message -->
+                                <div class = "show-hide-message col-sm-12" ng-show="main.errorMessage">
+                                    <div class="alert alert-danger">{{main.errorMessage}}</div>
+                                </div>
+                            </div>
+                            <!--Footer-->
+                            <div class="modal-footer">
+                                <div class="options text-center text-md-right mt-1">
+
+                                    <!-- Hide modal on forgot password -->
+                                    <p>Forgot<a href="/resetpassword" class="blue-text" ng-click="main.hideModal();"> Password?</a></p>
+                                </div>
+
+                                <!-- Hide modal on close -->
+                                <button type="button" class="btn btn-outline-info waves-effect ml-auto" data-dismiss="modal" ng-click="main.hideModal();">Close</button>
+                            </div>
+
+                        </div>
+                        <!--/.Panel 7-->
+
+                        <!--Panel 8-->
+                        <div class="tab-pane fade" id="register" role="tabpanel">
+
+                            <!--Body-->
+                            <div class="modal-body">
+
+                                <!-- Form to send form data to register -->
+                                <form name="regForm" ng-submit="main.regUser(regData,regForm.$valid,matched);" id="regForm" novalidate>
+                                    <div class="md-form form-sm" ng-class="{ 'success':(regForm.email.$valid && !regForm.email.$pristine && !main.emailInvalid), 'error':(!regForm.email.$valid && !regForm.email.$pristine) || (!regForm.email.$valid && regForm.$submitted) || main.emailInvalid }">
+                                        <i class="fa fa-envelope prefix"></i>
+                                        <input type="email" id="form24" class="form-control validate"  name="email" ng-minlength="3" ng-maxlength="40" ng-pattern="/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/" ng-model="main.regData.email" ng-blur="main.checkEmail(regData);" required>
+                                        <label for="form24">Your email</label>
+
+                                        <!-- Error message if not entered-->
+                                        <p class="help-block" ng-show="((!regForm.email.$pristine && regForm.email.$error.required) || (regForm.$submitted && regForm.email.$error.required))">* Please Enter your Email</p>
+
+                                        <!-- Error message if email already exists-->
+                                        <p class="help-block" ng-show="main.emailMsg && !regForm.email.$error.required && regForm.email.$valid">* {{main.emailMsg}}</p>
+
+                                        <!-- Error message by ng-pattern -->
+                                        <ul class="help-block" ng-show="((!regForm.email.$pristine && regForm.email.$error.pattern) || (!regForm.email.$pristine && regForm.email.$error.minlength) || (!regForm.email.$pristine && regForm.email.$error.maxlength))">
+                                            <li>Email should contain "@"</li>
+                                            <li>No special characters</li>
+                                            <li>Must be atleast 3 characters and not more than 25 characters</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="md-form form-sm" ng-class="{ 'success':(regForm.name.$valid && !regForm.name.$pristine), 'error':(!regForm.name.$valid && !regForm.name.$pristine) || (!regForm.name.$valid && regForm.$submitted) }">
+                                        <i class="fa fa-lock prefix"></i>
+                                        <input type="text" id="name" class="form-control validate" name="name"  ng-pattern="/^(([a-zA-Z]{2,15})+[ ]+([a-zA-Z]{2,15})+)+$/i" ng-minlength="4" ng-maxlength="40" ng-model="main.regData.name" required>
+                                        <label for="name">Your Name</label>
+
+                                        <!-- Error message if not entered-->
+                                        <p class="help-block" ng-show="((!regForm.name.$pristine && regForm.name.$error.required) || (regForm.$submitted && regForm.name.$error.required))">* Please Enter your Name</p>
+
+                                        <!-- Error message by ng-pattern -->
+                                        <ul class="help-block" ng-show="((!regForm.name.$pristine && regForm.name.$error.pattern) || (!regForm.name.$pristine && regForm.name.$error.minlength) || (!regForm.name.$pristine && regForm.name.$error.maxlength))">
+                                            <li>Name must be atleast 3 characters and not more than 30 characters</li>
+                                            <li>No special characters or numbers</li>
+                                            <li>Must be space between firstname and lastname</li>
+                                        </ul>
+                                    </div>
+                                    <div class="md-form form-sm" ng-class="{ 'success':(regForm.mobile.$valid && !regForm.mobile.$pristine), 'error':(!regForm.mobile.$valid && !regForm.mobile.$pristine) || (!regForm.mobile.$valid && regForm.$submitted)}">
+                                        <i class="fa fa-lock prefix"></i>
+                                        <input type="text" id="mobile" class="form-control validate" name="mobile"  ng-minlength="10" ng-maxlength="10" ng-pattern="/^(0|[1-9][0-9]*)+$/i" ng-model="main.regData.mobile" required>
+                                        <label for="mobile">Your Mobile Number</label>
+                                        <!-- Error message if not entered-->
+                                        <p class="help-block" ng-show="(!regForm.mobile.$pristine && regForm.mobile.$error.required) || (regForm.$submitted && regForm.mobile.$error.required)">* Please Enter your Mobile Number</p>
+                                    </div>
+                                    <div class="md-form form-sm" ng-class="{ 'success':(regForm.firstPassword.$valid && !regForm.firstPassword.$pristine), 'error':(!regForm.firstPassword.$valid && !regForm.firstPassword.$pristine) || (!regForm.firstPassword.$valid && regForm.$submitted)}">
+                                        <i class="fa fa-lock prefix"></i>
+                                        <input type="password" id="form25" class="form-control validate"  ng-minlength="8" ng-maxlength="35" ng-pattern="/^((?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W])(?!.*?[\s]).{8,35})+$/" name="firstPassword"  ng-model="firstPassword" required>
+                                        <label  for="form25">Your password</label>
+
+                                        <!-- Error message if not entered-->
+                                        <p class="help-block" ng-show="(!regForm.firstPassword.$pristine && regForm.firstPassword.$error.required) || (regForm.$submitted && regForm.firstPassword.$error.required)">* Please Enter your Password</p>
+
+                                        <!-- Error message by ng-pattern -->
+                                        <ul class="help-block" ng-show="(!regForm.firstPassword.$pristine && regForm.firstPassword.$error.pattern) || (!regForm.firstPassword.$pristine && regForm.firstPassword.$error.minlength) || (!regForm.firstPassword.$pristine && regForm.firstPassword.$error.maxlength)">
+                                            <li>Password should have atleast one special character</li>
+                                            <li>Atleast one number,one lowercase and one uppercase</li>
+                                            <li>Must be atleast 8 characters and not more than 35 characters</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="md-form form-sm" ng-class="{ 'success':matched && !regForm.confirmPassword.$error.required, 'error':(!matched && !regForm.confirmPassword.$error.required) || (regForm.confirmPassword.$error.required && !regForm.confirmPassword.$pristine) || (!matched && !regForm.confirmPassword.$pristine &&regForm.firstPassword.$valid)}" >
+                                        <i class="fa fa-lock prefix"></i>
+                                        <input type="password" id="form26" class="form-control validate"  name="confirmPassword" match="{{firstPassword}}" ng-model="confirm" ng-change="main.regData.password=confirm" required>
+                                        <label for="form26">Repeat password</label>
+
+                                        <!-- Error message if not entered-->
+                                        <p class="help-block error" ng-show="(!regForm.confirmPassword.$pristine && regForm.confirmPassword.$error.required) || (regForm.$submitted && regForm.confirmPassword.$error.required)">* Please Enter your Password</p>
+
+                                        <!-- Error message if passwords don't match -->
+                                        <p class="help-block error" ng-show="!matched && !regForm.confirmPassword.$pristine &&regForm.firstPassword.$valid">* Password don't match</p>
+                                    </div>
+
+                                    <div class="text-center form-sm mt-2">
+                                        <button class="btn btn-info" type="submit">Sign up <i class="fa fa-sign-in ml-1"></i></button>
+                                    </div>
+                                </form>
+                                <div class = "row show-hide-message col-sm-12" ng-show="main.successMessage">
+
+                                    <!-- Success message -->
+                                    <div class="alert alert-success">{{main.successMessage}}</div>
+                                </div>
+
+                                <div class = "row show-hide-message col-sm-12" ng-show="main.errorMessage">
+
+                                    <!-- Error message -->
+                                    <div class="alert alert-danger">{{main.errorMessage}}</div>
+                                </div>
+
+                            </div>
+                            <!--Footer-->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-info waves-effect ml-auto" data-dismiss="modal" ng-click="main.hideModal();">Close</button>
+                            </div>
+                        </div>
+                        <!--/.Panel 8-->
+                    </div>
+
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+
+    </main><!-- /.container -->
+
+    <!-- Footer -->
+    <footer id="myFooter">
+        <div class="container-fluid">
+            <div class="row text-center">
+                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4 ">
+                    <h4 class="logo"><a href="#"> QueryDesk<i class="fa fa-question-circle"></i></a></h4>
+                </div>
+                <div class="col-sm-6 col-md-2 col-lg-2 col-xl-2">
+                    <p><strong>Get started</strong></p>
+                    <ul>
+                        <li><a href="/"><p>Home</p></a></li>
+                        <li><a href="#features"><p>Features</p></a></li>
+                        <li><a href="#steps"><p>Why QuesyDesk?</p></a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                    <p><strong>About Us</strong></p>
+                    <ul>
+                        <li><a href="#"><p>QueryDesk.com</p></a></li>
+                        <li><a href="#"><p>Developed By- Abhijeet Juneja</p></a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                    <div class="social-networks">
+                        <a href="https://www.linkedin.com/in/abhijeet-juneja-b7513ba1" class="twitter"><i class="fa fa-linkedin" target="_blank"></i></a>
+                        <a href="https://www.facebook.com/abhijeet.juneja" class="facebook" target="_blank"><i class="fa fa-facebook"></i></a>
+                        <a href="https://www.github.com/abhijeetjuneja" class="google" target="_blank"><i class="fa fa-github"></i></a>
+                    </div>
+                    <button type="button" class="btn btn-default">Contact us</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p> QueryDesk ©2017 Abhijeet Juneja </p>
+        </div>
+    </footer>
+
+
+    
+
+    <script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="vendor/popper/popper.min.js"></script>
+    <script type="text/javascript" src="vendor/toastr/build/toastr.min.js"></script>
+    <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="vendor/mdbootstrap/js/mdb.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-js/angular.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-js/angular-animate.min.js"></script>
+    <script type="text/javascript" src="vendor/wow/wow.min.js"></script>
+    <script>
+    new WOW().init();
+    </script>
+    <script type="text/javascript" src="vendor/angular-js/angular-route.min.js"></script>
+    <script type="text/javascript" src="angular/app.js"></script>
+    <script type="text/javascript" src="angular/services/userServices.js"></script>
+    <script type="text/javascript" src="angular/services/authServices.js"></script>
+    <script type="text/javascript" src="angular/services/tokenServices.js"></script>
+    <script type="text/javascript" src="angular/services/interceptorServices.js"></script>
+    <script type="text/javascript" src="angular/services/ticketServices.js"></script>
+    <script type="text/javascript" src="angular/directives/match-password.js"></script>
+    <script type="text/javascript" src="angular/filters/filter.js"></script>
+    <script type="text/javascript" src="angular/controllers/mainController.js"></script>
+    <script type="text/javascript" src="angular/controllers/resetController.js"></script>
+    <script type="text/javascript" src="angular/controllers/ticketController.js"></script>
+    <script type="text/javascript" src="angular/controllers/dashboardController.js"></script>
+    <script type="text/javascript" src="angular/routes.js"></script>
+
+</body>
+
+</html>

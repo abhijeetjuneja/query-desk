@@ -1,0 +1,75 @@
+<!-- Create a Query Form -->
+
+<div class="container-fluid query-create">
+	<div class="row">
+		<div class="col-xs-12 col-lg-6 query-form">
+		<form name="ticketForm" ng-submit="ticket.createTicket(ticketData,ticketForm.$valid);" novalidate>
+		    <h4 class="h5 text-center mb-4">Ticket Creation</h4>
+
+		    <div class="md-form" ng-class="{ 'success':(ticketForm.queryTitle.$valid && !ticketForm.queryTitle.$pristine), 'error':(!ticketForm.queryTitle.$valid && !ticketForm.queryTitle.$pristine) || (!ticketForm.queryTitle.$valid && ticketForm.$submitted)}">
+		        <i class="fa fa-user prefix grey-text"></i>
+		        <input type="text" id="orangeForm-name" class="form-control validate"  name="queryTitle" ng-model="ticket.ticketData.queryTitle" required>
+		        <label for="orangeForm-name">Query Title</label>
+
+		        <!-- Error message if not entered-->
+		        <p class="help-block" ng-show="((!ticketForm.queryTitle.$pristine && ticketForm.queryTitle.$error.required) || (ticketForm.$submitted && ticketForm.queryTitle.$error.required))">Please Enter your Query Details</p>
+		    </div>
+
+		    <br>
+
+		    <div class="form-group" ng-class="{ 'success':(ticketForm.queryDepartment.$valid && !ticketForm.queryDepartment.$pristine), 'error':(!ticketForm.queryDepartment.$valid && !ticketForm.queryDepartment.$pristine) || (!ticketForm.queryDepartment.$valid && ticketForm.$submitted)}">
+
+		    	<i class="fa fa-user fa-2x prefix grey-text" style="padding-right: 1.5rem;"></i><label for="queryDepartment" class="grey-text">Query Department</label>
+		        <select class="form-control  validate query-select" id="queryDepartment" name="queryDepartment"  ng-model="ticket.ticketData.queryDepartment" required>
+			        <option value="Product">Product</option>
+			        <option value="Data Services">Data Services</option>
+			        <option value="Warranty Information">Warranty Information</option>
+			        <option value="Schedules">Schedules</option>
+				</select>
+
+				<!-- Error message if not entered-->
+				<p class="help-block" ng-show="((!ticketForm.queryDepartment.$pristine && ticketForm.queryDepartment.$error.required) || (ticketForm.$submitted && ticketForm.queryDepartment.$error.required))">* Please Enter your Query Department</p>
+				
+		    </div>
+
+		    <br>
+
+		    
+		    <div class="md-form" ng-class="{ 'success':(ticketForm.queryBody.$valid && !ticketForm.queryBody.$pristine), 'error':(!ticketForm.queryBody.$valid && !ticketForm.queryBody.$pristine) || (!ticketForm.queryBody.$valid && ticketForm.$submitted) || (!ticketForm.queryBody.$pristine && ticketForm.queryBody.$error.pattern) || (!ticketForm.queryBody.$pristine && ticketForm.queryBody.$error.minlength) || (!ticketForm.queryBody.$pristine && ticketForm.queryBody.$error.maxlength)}">
+		        <i class="fa fa-lock prefix grey-text"></i>
+		        <input type="text" id="orangeForm-pass" class="form-control validate" name="queryBody" ng-model="ticket.ticketData.queryBody" required>
+		        <label for="orangeForm-pass">Query Details</label>
+
+		        <!-- Error message if not entered-->
+		        <p class="help-block" ng-show="((!ticketForm.queryBody.$pristine && ticketForm.queryBody.$error.required) || (ticketForm.$submitted && ticketForm.queryBody.$error.required))">* Please Enter your Query Details</p>
+		    </div>
+
+		    <div class="text-center">
+		        <button class="btn btn-deep-orange" type="submit">Create Ticket</button>
+		    </div>
+
+		</form>
+
+		<br>
+
+		<div class = "row show-hide-message col-sm-12" ng-show="ticket.successMessage">
+
+			<!-- Success message-->
+			<div class="alert alert-success">{{ticket.successMessage}}</div>
+		</div>
+
+		<br>
+
+		<div class = "row show-hide-message col-sm-12" ng-show="ticket.errorMessage">
+
+			<!-- Error message-->
+			<div class="alert alert-danger">{{ticket.errorMessage}}</div>
+		</div>
+
+	<br>
+
+	</div>
+
+</div>
+
+

@@ -1,0 +1,126 @@
+<!-- Query Details -->
+<div class="detail-view">
+
+    <div class="query-detail-main">
+
+        <!-- Query Title card -->
+	   <div class="card queryTitle pt-3">
+
+			<div class="row" >
+
+                <!-- Grid column -->
+                <div class="col-md-10"> 
+                    <h4><strong>&nbsp<i class="fa fa-ticket"></i>&nbsp{{ticket.query.queryTitle}}</strong></h4>
+                </div>
+
+                <!-- Change ticket status -->
+                <div class="col-md-2 dropdown" ng-if="ticket.query.userId == main.userId || main.name == 'Admin Admin'">           
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Status</a>
+					<div class="dropdown-menu" aria-labelledby="dropdown02">
+			            <a class="dropdown-item" ng-class="{disabled:ticket.open}" ng-click="ticket.changeStatus('Open');">Open</a>
+			            <a class="dropdown-item" ng-class="{disabled:ticket.close}" ng-click="ticket.changeStatus('Close');">Close</a>
+	            	</div>            
+                </div>
+            </div>
+
+            <!-- Query card body -->
+            <div class="card-body pb-0 mt-3">
+
+                <!-- Grid row -->
+                <div class="row">
+
+                    <!-- Query Body -->
+                    <div class="col-md-12 mb-4 pt-4">
+                
+                        <p>{{ticket.query.queryBody}}</p>
+                
+                    </div>
+
+                    <!-- Query UserName -->
+                    <div class="col-md-2 comment-head">
+                
+                        <p><i class="fa fa-user"></i>&nbsp{{ticket.query.userName}}</p>
+                
+                    </div>
+
+                    <!-- Query Date -->
+                    <div class="col-md-10 ">
+                
+                       <p1><i class="fa fa-calendar"></i>&nbspPosted on - {{ticket.query.createdAt | date : 'medium'}}</p1>
+                
+                    </div>
+
+                </div>
+                <!-- Grid row -->                  
+            </div>
+        </div>
+        <hr>
+
+        <!-- Query Comments -->
+        <div class="card queryComments"  ng-repeat="comments in ticket.comments" ng-model="ticket.comments">
+            <div class="card-body pb-0">
+
+                <!-- Grid row -->
+                <div class="row">
+                    
+                    <!-- Query Comment Heading -->
+                    <div class="col-md-12 comment-head">
+                
+                        <p><strong><i class="fa fa-user"></i>&nbsp{{comments.userName}}<hr></strong></h4>
+                
+                    </div>
+
+                    <!-- Query Comment Text -->
+                    <div class="col-md-12">
+                
+                        <p><i class="fa fa-message"></i>&nbsp{{comments.commentText}}</p>
+
+                
+                    </div>
+
+                    <!-- Query Comment Date -->
+                    <div class="col-md-12 mt-4">
+                
+                        <p1><i class="fa fa-calendar"></i>&nbsp Posted on - {{comments.createdAt | date : 'medium'}}</p1>
+                
+                    </div>
+
+                </div>
+                <!-- Grid row -->                
+
+            </div>
+        </div>
+
+
+        <hr>
+
+        <!-- Query Post Form -->
+        <div class="card queryPost">
+
+            <!-- Query Post body -->
+            <div class="card-body pt-4">
+
+                <!-- Grid row -->
+                <div class="row">
+                    
+					<div class="col-sm-12 text-center">
+
+                        <!-- Post Form -->
+						<form name="commentForm" id="commentForm" ng-submit="ticket.postAnswer(answerData,commentForm.$valid);" novalidate>
+
+                            <!-- Answer -->
+							<div class="md-form form-sm" ng-class="{ 'success':(commentForm.answer.$valid && !commentForm.answer.$pristine), 'error':(!commentForm.answer.$valid && !commentForm.answer.$pristine) || (!commentForm.answer.$valid && commentForm.$submitted) }" >
+                                <input class="form-control" type="text" name="answer" ng-model="ticket.answerData.answer" required>
+                                <label for="form22">Enter Answer</label>
+                                <p class="help-block" ng-show="((!commentForm.answer.$pristine && commentForm.answer.$error.required) || (commentForm.$submitted && commentForm.answer.$error.required))">Please Enter your answer</p>
+								<br>
+                        	</div>
+
+							<button class="btn btn-deep-orange btn-lg waves-effect" type="submit">Post Answer</button>
+						</form>
+					</div>                        
+                </div>             
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,252 @@
+<!--Main Dashboard -->
+<div class=" container-fluid main-dashboard " ng-if="!main.loading">
+
+    <!--User Dashboard Head-->
+    <div class="row container-fluid dashboard-head col-lg-9  " ng-if="!dashboard.admin">
+
+            <div class="col-sm-6 col-md-8 mt-3">
+        
+                <h4><strong><i class="fa fa-ticket"></i>Dashboard&nbsp&nbsp<a href='/query/create'><button type="button" class="btn btn-success btn-sm"><strong><i class="fa fa-plus"></i></strong></button></a></strong></h4>                
+        
+            </div>
+
+            <!--USer Dashboard  filters-->
+            <div class="col-sm-6 col-md-4 filters row">
+
+                <!--Query type filter -->
+                <div class="col-sm-6 col-md-6 filter-entry">
+                    <input type="checkbox" id="queryTypeSwitch" name="set-name" class="switch-input"
+                    ng-click="dashboard.filterQueryType(0);">
+                    <label for="queryTypeSwitch" class="switch-label"><span class="toggle--on">All</span><span class="toggle--off">My</span> Queries
+                    </label>
+                </div>
+
+                <!--Status filter -->
+                <div class="col-sm-3 col-md-6 filter-entry">
+                    <div class="wrapper">
+                        <label for="yes_radio" id="yes-lbl">Open</label><input type="radio" value="" name="choice_radio" id="yes_radio" ng-click="dashboard.filterQueryStatus('Open');">
+                        <label for="maybe_radio" id="maybe-lbl">All</label><input type="radio" value="" name="choice_radio" id="maybe_radio" checked="checked" ng-click="dashboard.filterQueryStatus('');">
+                        <label for="no_radio" id="no-lbl">Close</label><input type="radio" value="" name="choice_radio" id="no_radio" ng-click="dashboard.filterQueryStatus('Close');">
+                      
+                      <div class="toggle"></div>
+                     </div>
+                </div>
+            </div>
+            <!-- Grid column -->
+    </div>
+
+    <!--Admin Dashboard Head-->
+    <div class="row container-fluid dashboard-head-admin col-lg-11" ng-if="dashboard.admin">
+        <!-- Grid column -->
+            <div class="col-md-12 mt-2">
+        
+                <h4><strong><i class="fa fa-ticket"></i>Admin Dashboard</strong></h4>                
+        
+            </div>
+    </div>
+
+    <!--Admin Dashboard -->
+    <div class="row dashboard col-lg-11" ng-if="dashboard.admin">
+        <div class=" table-responsive text-center">
+            <!--Table-->
+            <table class="table table-striped table-wrapper-2">
+
+                <!--Table head-->
+                <thead>
+                    <tr>
+                        <th>Ticket Title</th>
+                        <th>Department</th>
+                        <th>Posted By</th>
+                        <th>Posted on</th>
+                        <th>Replies</th>
+                        <th>Views</th>
+                        <th>Status</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <!--Table head-->
+
+                <!--Table body-->
+                <tbody>
+                    <!--Filters -->
+                    <tr>
+                        <td><b>
+                            <!--Title filter -->
+                            <div class="md-form form-sm">
+                                    <input type="text" id="title" class="form-control validate" ng-model="query1.queryTitle" required>
+                                    <label for="title">By Title</label>
+                            </div>
+                        </td>
+                        <td><b>
+                            <!--Department filter -->
+                            <div class="md-form form-sm">
+                                    <input type="text" id="Department" class="form-control validate" ng-model="query1.queryDepartment" required>
+                                    <label for="Department">By Department</label>
+                            </div>
+                        </b></td>
+                        <td><b>
+                            <!--Username filter -->
+                            <div class="md-form form-sm">
+                                    <input type="text" id="userName" class="form-control validate" ng-model="query1.userName" required>
+                                    <label for="userName">By Username</label>
+                            </div>
+                        </td>
+                        <td><b>
+                            <!--Date filter -->
+                            <select class="form-control" ng-model="createdAt" id="date" ng-change="sort(createdAt)">
+                                <option value="">All</option>
+                                <option value="-createdAt">Latest</option>
+                                <option value="createdAt">Oldest</option>
+                            </select>
+                        </td>
+                        <td><b>
+                            <!--Comments filter -->
+                            <select class="form-control" ng-model="comment" id="comment" ng-change="sort(comment)">
+                                <option value="">All</option>
+                                <option value="-comments.length">Most Replies</option>
+                                <option value="comments.length">Least Replies</option>
+                            </select>
+                        </td>
+                        <td><b>
+                            <!--View filter-->
+                            <select class="form-control" ng-model="view" id="view" ng-change="sort(view)">
+                                <option value="">All</option>
+                                <option value="-views">Most Viewed</option>
+                                <option value="views">Least Viewed</option>
+                            </select>
+                        </td>
+                        <td><b>
+                            <!--STatus filter -->
+                            <select class="form-control" ng-model="query1.ticketStatus">
+                                <option value="">All</option>
+                                <option value="Open">Open</option>
+                                <option value="Close">Close</option>
+                            </select>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+
+                    <!--All Queries -->
+                    <tr ng-repeat="queries in filtered = (dashboard.allQueries | filter : query1 | orderBy : predicate) | startFrom:dashboard.currentPage*dashboard.pageSize | limitTo:dashboard.pageSize" >
+                        <td id="query-title" ng-click="dashboard.getDetail(queries._id)"><b>{{queries.queryTitle}}</td>
+                        <td id="query-title" ng-click="dashboard.getDetail(queries._id)"><b>{{queries.queryDepartment}}</b></td>
+                        <td id="query-title" ng-click="dashboard.getDetail(queries._id)"><b>{{queries.userName}}</td>
+                        <td id="query-title" ng-click="dashboard.getDetail(queries._id)"><b>{{queries.createdAt | date : 'medium'}}</td>
+                        <td id="query-title" ng-click="dashboard.getDetail(queries._id)"><b>{{queries.comments.length}}</td>
+                        <td id="query-title" ng-click="dashboard.getDetail(queries._id)"><b>{{queries.views}}</td>
+                        <td id="query-title" ng-click="dashboard.getDetail(queries._id)"><b>{{queries.ticketStatus}}</td>
+                        <td><b><i id="delete-icon" class="fa fa-trash fa-2x" style="color: red;" ng-click="dashboard.deleteTicket(queries._id)"></i></td>
+                    </tr>  
+                </tbody>
+                <!--Table body-->
+            </table>
+            <!--Table-->
+             
+
+        </div>
+            <!--Pagination -->
+            <div class="text-center table-buttons">
+                <button class="btn btn-primary btn-lg dash-button" ng-disabled="dashboard.currentPage+1 == 1" ng-click="dashboard.currentPage=dashboard.currentPage-1">
+                    Previous
+                </button> 
+                <strong>{{dashboard.currentPage+1}}/{{dashboard.numberOfPages(filtered.length)}}</strong>
+                <button class="btn btn-primary btn-lg dash-button" ng-disabled="dashboard.currentPage+1 >= dashboard.numberOfPages(filtered.length)" ng-click="dashboard.currentPage=dashboard.currentPage+1">
+                    Next
+                </button> 
+            </div>
+    </div>
+
+
+    <!--User Dashboard -->
+    <div class="row userDashboard col-lg-9" ng-if="!dashboard.admin" ng-init="name = dashboard.userName">
+
+        
+
+        <div class="col-md-12 user-entry-head" ng-if="dashboard.allQueries.length">
+
+            <h4 class="text-center"><strong>All Queres are listed below</strong></h4>
+
+            <!--User filters for mobile version -->
+            <div class="mob-filters row">
+
+                <!--Query type -->
+                <div class="filter-entry-type">
+                    <input type="checkbox" id="queryTypeSwitch1" name="set-name" class="switch-input"
+                    ng-click="dashboard.filterQueryType(1);">
+                    <label for="queryTypeSwitch1" class="switch-label"><span class="toggle--on">All</span><span class="toggle--off">User</span> Queries
+                    </label>
+                </div>
+
+                <!--Status filter -->
+                <div class="filter-entry-status">
+                    <strong>&nbsp&nbspFilter By Status</strong>
+                    <div class="wrapper">
+                        <label for="yes_radio1" id="yes-lbl1">Open</label><input type="radio" value="" name="choice_radio" id="yes_radio1" ng-click="dashboard.filterQueryStatus('Open');">
+                        <label for="maybe_radio1" id="maybe-lbl1">All</label><input type="radio" value="" name="choice_radio" id="maybe_radio1" checked="checked" ng-click="dashboard.filterQueryStatus('');">
+                        <label for="no_radio1" id="no-lbl1">Close</label><input type="radio" value="" name="choice_radio" id="no_radio1" ng-click="dashboard.filterQueryStatus('Close');">
+
+                        <div class="toggle"></div>
+                     </div>
+                </div>
+            </div>
+
+            <!--All Queries -->
+            <div class="col-md-12 mt-4 userEntries" ng-repeat="queries in filtered = (dashboard.allQueries | filter : query | orderBy : predicate)|  startFrom:dashboard.currentPage*dashboard.pageSize | limitTo:dashboard.pageSize " ng-click="dashboard.getDetail(queries._id)">
+                <!-- Grid row -->
+                <div class="row">
+                
+                    
+                    <!-- Grid column -->
+                    <!-- Grid column -->
+                    <div class="col-md-12">
+                
+                        <h4><strong>{{queries.queryTitle}}</strong></h4>
+
+                
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-2 mt-2 comment-head">
+                
+                        <p><strong><i class="fa fa-user"></i>&nbsp{{queries.userName}}</strong></p>
+                
+                    </div>
+
+                    <div class="col-md-6 mt-2">
+                
+                        <p><i class="fa fa-calendar"></i>&nbsp{{queries.createdAt | date : 'medium'}}</p>
+                
+                    </div>
+
+                    <div class="col-md-2 mt-2">
+                
+                        <p><i class="fa fa-comment"></i>&nbsp{{queries.comments.length}}</p>
+                
+                    </div>
+
+                    <div class="col-md-2 mt-2">
+                
+                        <p><i class="fa fa-eye"></i>&nbsp{{queries.views}}</p>
+                
+                    </div>
+
+                </div>
+                <!-- Grid row -->
+            </div>    
+            <div class="col-md-12 no-queries text-center" ng-if="!dashboard.allQueries.length || !dashboard.numberOfPages(filtered.length)" style="margin: 10vh auto;">
+                <h2>No Queries Found</h2>
+            </div>
+            <center>
+            <button class="btn btn-primary btn-lg dash-button" ng-disabled="dashboard.currentPage+1 == 1" ng-click="dashboard.currentPage=dashboard.currentPage-1">
+            Previous
+            </button> 
+            <strong>{{dashboard.currentPage+1}}/{{dashboard.numberOfPages(filtered.length)}}</strong>
+            <button class="btn btn-primary btn-lg dash-button" ng-disabled="dashboard.currentPage+1 >= dashboard.numberOfPages(filtered.length)" ng-click="dashboard.currentPage=dashboard.currentPage+1">
+              Next
+            </button>     
+        </div>
+    </div>
+</div>      
+
