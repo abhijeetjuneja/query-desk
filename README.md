@@ -36,19 +36,19 @@ QueryDesk is a ticket support system designed to provide customers support over 
   4. Login or Signup to raise tickets.
 
 ## Technologies Used
+  
+  1. Frontend
+    
+    * HTML
+    * CSS
+    * Bootstrap
+    * AngularJS
 
- 		1.Frontend
-		1. HTML
-		2. CSS
-		3. Bootstrap
-		4. AngularJS
+  2. Backend
 
-
-	2. Backend
-
-        1. NodeJS
-        2. ExpressJS
-        3. MongoDB
+    * NodeJS
+    * ExpressJS
+    * MongoDB
 
 ## Tools
 
