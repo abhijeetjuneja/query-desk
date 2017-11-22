@@ -39,7 +39,7 @@ QueryDesk is a ticket support system designed to provide customers support over 
   
 ### 1. Frontend
     
-  	* HTML
+		1.HTML
   	* CSS
   	* Bootstrap
   	* AngularJS
